@@ -7,3 +7,11 @@
 # never commit real secrets / keys
 # local throwaway from Laravel 11 scaffold attempt
 /backend-laravel11-failed
+# OpenClaw / Hermes workspace artifacts (not part of the app)
+/AGENTS.md
+/HEARTBEAT.md
+/IDENTITY.md
+/SOUL.md
+/TOOLS.md
+/USER.md
+/openclaw-workspace-state.json
