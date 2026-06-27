@@ -63,6 +63,8 @@ class TicketController extends Controller
             'requester_id' => ['sometimes', 'exists:users,id'],
             'assignee_id'  => ['sometimes', 'nullable', 'exists:users,id'],
             'status'       => ['sometimes', 'in:open,pending,resolved,closed'],
+            'tag_ids'      => ['sometimes', 'array'],
+            'tag_ids.*'    => ['sometimes', 'exists:tags,id'],
         ]);
 
         // Customers always create tickets as themselves
@@ -71,9 +73,21 @@ class TicketController extends Controller
             unset($validated['assignee_id'], $validated['status']);
         }
 
+        // Staff: default requester to themselves if not specified
+        if (!isset($validated['requester_id'])) {
+            $validated['requester_id'] = $request->user()->id;
+        }
+
+        $tagIds = $validated['tag_ids'] ?? [];
+        unset($validated['tag_ids']);
+
         $ticket = Ticket::create($validated);
 
-        return response()->json($ticket->fresh(), 201);
+        if (!empty($tagIds)) {
+            $ticket->tags()->sync($tagIds);
+        }
+
+        return response()->json($ticket->fresh(['requester:id,name,email', 'assignee:id,name,email', 'tags:id,name']), 201);
     }
 
     /**

@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import Login from './pages/Login'
 import TicketList from './pages/TicketList'
 import TicketDetail from './pages/TicketDetail'
+import CreateTicket from './pages/CreateTicket'
 
 function ProtectedRoute({ children }) {
   const { isAuthed } = useAuth()
@@ -30,6 +31,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <TicketList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tickets/new"
+        element={
+          <ProtectedRoute>
+            <CreateTicket />
           </ProtectedRoute>
         }
       />

@@ -91,7 +91,15 @@ export default function TicketList() {
       <main className="mx-auto max-w-6xl px-6 py-6">
         <div className="mb-4 flex items-center justify-between">
           <h1 className="text-xl font-bold text-gray-900">Tickets</h1>
-          <span className="text-sm text-gray-500">{meta.total} total</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-500">{meta.total} total</span>
+            <button
+              onClick={() => navigate('/tickets/new')}
+              className="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500"
+            >
+              + New Ticket
+            </button>
+          </div>
         </div>
 
         {/* Filters bar */}
