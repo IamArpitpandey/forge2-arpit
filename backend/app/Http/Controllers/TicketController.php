@@ -26,12 +26,21 @@ class TicketController extends Controller
             $query->where('requester_id', $request->user()->id);
         }
 
-        // Optional filters
+        // Filters
         if ($status = $request->input('status')) {
             $query->where('status', $status);
         }
         if ($priority = $request->input('priority')) {
             $query->where('priority', $priority);
+        }
+        if ($assigneeId = $request->input('assignee_id')) {
+            $query->where('assignee_id', $assigneeId);
+        }
+        if ($q = $request->input('q')) {
+            $query->where(function ($sq) use ($q) {
+                $sq->where('subject', 'like', "%{$q}%")
+                   ->orWhere('description', 'like', "%{$q}%");
+            });
         }
 
         return response()->json(
